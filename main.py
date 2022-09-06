@@ -4,6 +4,7 @@ from diseño import *
 from PySide2 import QtCore
 from PySide2.QtCore import QPropertyAnimation
 from PySide2 import QtCore,QtGui,QtWidgets
+from PySide2.QtGui import QPixmap
 
 class MiApp(QMainWindow):
     def __init__(self):
@@ -30,6 +31,12 @@ class MiApp(QMainWindow):
         self.ui.pushButton_9.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.selec_archivo))
         self.ui.pushButton_10.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.ajustes))
 
+        #Botones pagina seleccionar foto
+        self.ui.btn_search.clicked.connect(self.search_foto)
+
+        #Botones pagina seleccionar archivo
+        self.ui.btn_search2.clicked.connect(self.search_file)
+
         #Control de la barra de titulos
         self.ui.btn_segundoplano.clicked.connect(self.admin_btn_segundoplano)
         self.ui.btn_minimizar.clicked.connect(self.admin_btn_minimizar)
@@ -39,7 +46,7 @@ class MiApp(QMainWindow):
 
         #menu lateral
         self.ui.btn_menu.clicked.connect(self.gestionar_menu)
-    
+        
     def admin_btn_segundoplano(self):
         self.showMinimized()
 
@@ -88,6 +95,23 @@ class MiApp(QMainWindow):
             self.showMaximized()
         else:
             self.showNormal()
+            
+    ##metodo buscar foto
+    def search_foto(self):
+        fname = QFileDialog.getOpenFileName(self, "Open File","","PNG(*.png);;JPEG(*.jpeg);;JPG(*.jpg)")
+        
+        self.pixmap = QPixmap(fname[0])
+        self.ui.prev_foto.setPixmap(self.pixmap)
+
+    ##metodo buscar archivos
+    def search_file(self):
+        fname = QFileDialog.getOpenFileName(self, "Open File","","PDF(*.pdf)")
+
+        self.pixmap = QPixmap(fname[0])
+        self.ui.prev_file.setPixmap(self.pixmap)
+        if fname:
+            self.ui.file_path.setText(str(fname))
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
